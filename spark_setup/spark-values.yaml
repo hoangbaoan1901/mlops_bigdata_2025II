@@ -1,0 +1,74 @@
+master:
+  # Cấu hình cho Spark master
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+  containerPorts:
+    http: 18080
+    cluster: 7077
+  # Cho phép truy cập từ các namespace khác
+  networkPolicy:
+    enabled: true
+    allowExternal: true
+    ingressNSMatchLabels:
+      kubernetes.io/metadata.name: kubeflow
+    ingressNSPodMatchLabels:
+      app: mlflow
+
+worker:
+  # Số lượng worker
+  replicaCount: 2
+  containerPorts:
+    http: 18081
+  # Cấu hình tài nguyên cho mỗi worker
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "1000m"
+    limits:
+      memory: "4Gi"
+      cpu: "2000m"
+  
+  # Cho phép tự động scale
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPU: 80
+  
+  # Cấu hình memory cho worker
+  memoryLimit: "4G"
+  # Giới hạn số cores
+  coreLimit: "2"
+
+security:
+  ssl:
+    enabled: false
+  rpc:
+    authenticationEnabled: false
+    encryptionEnabled: false
+  storageEncryptionEnabled: false
+
+# Cấu hình service để expose Spark UI
+service:
+  type: ClusterIP
+  ports:
+    http: 18080
+    cluster: 7077
+  nodePorts:
+    http: ""
+    cluster: ""
+
+# Cho phép thu thập metrics
+metrics:
+  enabled: true
+  masterAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "18080"
+  workerAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "18081" 
