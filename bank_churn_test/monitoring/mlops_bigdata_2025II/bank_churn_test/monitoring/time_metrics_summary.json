@@ -1,0 +1,182 @@
+{
+  "general": {
+    "total_batches": 10,
+    "monitoring_period": {
+      "start": "2025-05-05T00:06:24.442324",
+      "end": "2025-05-05T00:07:55.592649"
+    },
+    "avg_response_time": 31.865391731262207,
+    "avg_success_rate": 100.0
+  },
+  "time_patterns": {
+    "hourly": {
+      "0": {
+        "request_count": 480,
+        "avg_response_time": 33.596219619115196,
+        "success_rate": 100.0
+      },
+      "1": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "2": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "3": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "4": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "5": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "6": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "7": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "8": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "9": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "10": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "11": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "12": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "13": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "14": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "15": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "16": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "17": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "18": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "19": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "20": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "21": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "22": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "23": {
+        "request_count": 560,
+        "avg_response_time": 27.49760832105364,
+        "success_rate": 100.0
+      }
+    },
+    "daily": {
+      "Monday": {
+        "request_count": 480,
+        "avg_response_time": 33.596219619115196,
+        "success_rate": 100.0
+      },
+      "Tuesday": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "Wednesday": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "Thursday": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "Friday": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "Saturday": {
+        "request_count": 0,
+        "avg_response_time": 0,
+        "success_rate": 0
+      },
+      "Sunday": {
+        "request_count": 560,
+        "avg_response_time": 27.49760832105364,
+        "success_rate": 100.0
+      }
+    },
+    "trend": {
+      "response_time_change_rate": -0.09931857447015904,
+      "response_time_percent_change": -22.810924531294308,
+      "max_response_time_hour": 0,
+      "min_response_time_hour": 23,
+      "hour_response_time_variation": 6.098611298061556,
+      "daily_success_rate_change": 0.0,
+      "peak_request_hour": 23,
+      "peak_response_time_hour": 0
+    }
+  }
+}
