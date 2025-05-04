@@ -90,7 +90,8 @@ def preprocess_data(
     packages_to_install=[
         "pandas==2.1.4",
         "scikit-learn==1.3.2",
-        "boto3==1.34.0"
+        "boto3==1.34.0",
+        "mlflow==2.10.2"  # Added MLflow
     ]
 )
 def train_model(
@@ -98,13 +99,22 @@ def train_model(
     minio_endpoint: str,
     minio_access_key: str,
     minio_secret_key: str,
-    minio_bucket: str
+    minio_bucket: str,
+    mlflow_tracking_uri: str = "http://mlflow.mlflow.svc.cluster.local:5000"
 ) -> dict:
     import pickle
     from sklearn.linear_model import LogisticRegression
     import boto3
     from botocore.client import Config
     from io import BytesIO
+    import os
+    import mlflow
+    import mlflow.sklearn
+    
+    # Configure MinIO for MLflow
+    os.environ["AWS_ACCESS_KEY_ID"] = minio_access_key
+    os.environ["AWS_SECRET_ACCESS_KEY"] = minio_secret_key
+    os.environ["MLFLOW_S3_ENDPOINT_URL"] = minio_endpoint
     
     # Khởi tạo MinIO client
     s3_client = boto3.client(
@@ -127,14 +137,31 @@ def train_model(
     model = LogisticRegression(max_iter=1000)
     model.fit(train_data['X_train'], train_data['y_train'])
     
-    # Lưu model
-    with BytesIO() as bio:
-        pickle.dump(model, bio)
-        bio.seek(0)
-        s3_client.upload_fileobj(bio, minio_bucket, 'model.pkl')
+    # Set up MLflow
+    mlflow.set_tracking_uri(mlflow_tracking_uri)
+    mlflow.set_experiment("bank-churn-prediction2")
+    
+    # Log model with MLflow
+    with mlflow.start_run() as run:
+        mlflow.log_params({
+            'max_iter': 1000,
+            'solver': 'lbfgs'
+        })
+        
+        # Log the model using MLflow
+        mlflow.sklearn.log_model(model, "model")
+        model_uri = f"runs:/{run.info.run_id}/model"
+        
+        # Save model to MinIO as well (for compatibility with evaluate_model)
+        with BytesIO() as bio:
+            pickle.dump(model, bio)
+            bio.seek(0)
+            s3_client.upload_fileobj(bio, minio_bucket, 'model.pkl')
     
     return {
         'model_path': f's3://{minio_bucket}/model.pkl',
+        'mlflow_model_uri': model_uri,
+        'mlflow_run_id': run.info.run_id,
         'feature_names': preprocessed_data['feature_names'],
         'model_params': {
             'max_iter': 1000,
@@ -235,7 +262,7 @@ def log_to_mlflow(
 
     # Set MLflow tracking URI
     mlflow.set_tracking_uri(mlflow_tracking_uri)
-    mlflow.set_experiment("bank-churn-prediction")
+    mlflow.set_experiment("bank-churn-prediction2")
 
     # Log to MLflow
     with mlflow.start_run():
