@@ -2,10 +2,10 @@ apiVersion: "serving.kserve.io/v1beta1"
 kind: "InferenceService"
 metadata:
   name: "bankchurn"
-  namespace: "bankchurn-kserve"
+  namespace: "bankchurn-kserve-2"
 spec:
   predictor:
-    serviceAccountName: sa
+    serviceAccountName: sa-minio-kserve
     model:
       modelFormat:
         name: mlflow

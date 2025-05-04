@@ -29,21 +29,21 @@ pip install -r requirements.txt
 1. Áp dụng cấu hình Secret và Service Account:
 
 ```bash
-kubectl apply -f secret.yaml -n bankchurn-kserve
-kubectl apply -f service-account.yaml -n bankchurn-kserve
+kubectl apply -f secret.yaml -n bankchurn-kserve-2
+kubectl apply -f service-account.yaml -n bankchurn-kserve-2
 ```
 
 2. Triển khai model với KServe:
 
 ```bash
-kubectl apply -f bank_churn_serve.yaml -n bankchurn-kserve
+kubectl apply -f bank_churn_serve.yaml -n bankchurn-kserve-2
 ```
 
 3. Kiểm tra trạng thái:
 
 ```bash
-kubectl get inferenceservices -n bankchurn-kserve
-kubectl get pods -n bankchurn-kserve
+kubectl get inferenceservices -n bankchurn-kserve-2
+kubectl get pods -n bankchurn-kserve-2
 ```
 
 ## Truy cập model
