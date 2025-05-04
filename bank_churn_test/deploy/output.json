@@ -1,0 +1,23 @@
+{
+    "model_name": "mlflow-model",
+    "id": "3c17331d-dd7c-432e-9c91-79d038af44fd",
+    "parameters": {
+        "content_type": "np"
+    },
+    "outputs": [
+        {
+            "name": "output-1",
+            "shape": [
+                1,
+                1
+            ],
+            "datatype": "INT64",
+            "parameters": {
+                "content_type": "np"
+            },
+            "data": [
+                1
+            ]
+        }
+    ]
+}

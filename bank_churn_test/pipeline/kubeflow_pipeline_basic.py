@@ -91,7 +91,8 @@ def preprocess_data(
         "pandas==2.1.4",
         "scikit-learn==1.3.2",
         "boto3==1.34.0",
-        "mlflow==2.10.2"  # Added MLflow
+        "mlflow==2.10.2",
+        "numpy==1.26.4"
     ]
 )
 def train_model(
@@ -100,7 +101,7 @@ def train_model(
     minio_access_key: str,
     minio_secret_key: str,
     minio_bucket: str,
-    mlflow_tracking_uri: str = "http://mlflow.mlflow.svc.cluster.local:5000"
+    mlflow_tracking_uri: str = "http://mlflow.kubeflow.svc.cluster.local:5000"
 ) -> dict:
     import pickle
     from sklearn.linear_model import LogisticRegression
@@ -110,6 +111,9 @@ def train_model(
     import os
     import mlflow
     import mlflow.sklearn
+    import numpy as np
+    import pandas as pd
+    from mlflow.models.signature import infer_signature
     
     # Configure MinIO for MLflow
     os.environ["AWS_ACCESS_KEY_ID"] = minio_access_key
@@ -133,9 +137,21 @@ def train_model(
     response = s3_client.get_object(Bucket=bucket, Key=key)
     train_data = pickle.loads(response['Body'].read())
     
+    # Create a DataFrame for the features (helps with JSON compatibility)
+    feature_names = preprocessed_data['feature_names']
+    X_train_df = pd.DataFrame(train_data['X_train'], columns=feature_names)
+    
     # Train model
     model = LogisticRegression(max_iter=1000)
-    model.fit(train_data['X_train'], train_data['y_train'])
+    model.fit(X_train_df, train_data['y_train'])
+    
+    # Create a sample input for inference
+    sample_input = X_train_df.iloc[:1]
+    
+    # Infer the model signature from inputs
+    # This helps MLServer understand the expected input format
+    predictions = model.predict(X_train_df)
+    signature = infer_signature(X_train_df, predictions)
     
     # Set up MLflow
     mlflow.set_tracking_uri(mlflow_tracking_uri)
@@ -148,8 +164,18 @@ def train_model(
             'solver': 'lbfgs'
         })
         
-        # Log the model using MLflow
-        mlflow.sklearn.log_model(model, "model")
+        # Log the model using MLflow with signature and input example
+        mlflow.sklearn.log_model(
+            model, 
+            "model",
+            signature=signature,
+            input_example=sample_input,
+            pip_requirements=[
+                "scikit-learn==1.3.2",
+                "pandas==2.1.4",
+                "numpy==1.26.4"
+            ]
+        )
         model_uri = f"runs:/{run.info.run_id}/model"
         
         # Save model to MinIO as well (for compatibility with evaluate_model)
@@ -157,6 +183,15 @@ def train_model(
             pickle.dump(model, bio)
             bio.seek(0)
             s3_client.upload_fileobj(bio, minio_bucket, 'model.pkl')
+            
+        # Also save the schema information for reference
+        schema_info = {
+            "feature_names": feature_names,
+            "sample_input_json": sample_input.to_dict(orient="split"),
+            "signature": str(signature)
+        }
+        
+        mlflow.log_dict(schema_info, "model_schema.json")
     
     return {
         'model_path': f's3://{minio_bucket}/model.pkl',
@@ -286,7 +321,7 @@ def churn_pipeline():
     minio_endpoint = "http://minio-service.kubeflow.svc.cluster.local:9000"
     minio_access_key = "minio"
     minio_secret_key = "minio123"
-    minio_bucket = "mlflow"
+    minio_bucket = "mlflow-artifacts"
     
     # Preprocess data
     preprocess = preprocess_data(
@@ -318,7 +353,7 @@ def churn_pipeline():
     # Log to MLflow
     log_mlflow = log_to_mlflow(
         results=evaluate.output,
-        mlflow_tracking_uri="http://mlflow.mlflow.svc.cluster.local:5000",
+        mlflow_tracking_uri="http://mlflow.kubeflow.svc.cluster.local:5000",
         minio_endpoint=minio_endpoint,
         minio_access_key=minio_access_key,
         minio_secret_key=minio_secret_key,
