@@ -1,0 +1,13 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "bankchurn"
+  namespace: "bankchurn-kserve"
+spec:
+  predictor:
+    serviceAccountName: sa
+    model:
+      modelFormat:
+        name: mlflow
+      protocolVersion: v2
+      storageUri: "s3://mlflow-artifacts/3/3cad7a3d97dc44c4a07ef03680442b79/artifacts/model/"
