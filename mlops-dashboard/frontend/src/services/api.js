@@ -19,9 +19,9 @@ export const mlflowApi = {
   getLogs: () => api.get('/mlflow/logs'),
   
   // Mock API calls
-  getMockExperiments: () => api.get('/mock/mlflow/experiments'),
-  getMockRuns: () => api.get('/mock/mlflow/runs'),
-  getMockModels: () => api.get('/mock/mlflow/models'),
+  getMockExperiments: () => api.get('/mlflow/mock/experiments'),
+  getMockRuns: () => api.get('/mlflow/mock/runs'),
+  getMockModels: () => api.get('/mlflow/mock/models'),
   
   // Model Registry API calls
   registerModel: (model) => api.post('/mlflow/model-registry/models', model),
@@ -36,27 +36,26 @@ export const kubeflowApi = {
   checkConnection: (port) => api.get(`/kubeflow/check-connection?port=${port}`),
   
   // Mock API calls
-  getMockPipelines: () => api.get('/mock/kubeflow/pipelines'),
-  getMockRuns: () => api.get('/mock/kubeflow/runs'),
-  getMockPipelineGraph: (pipelineId) => api.get(`/mock/kubeflow/pipeline-graph?pipeline_id=${pipelineId}`),
+  getMockPipelines: () => api.get('/kubeflow/mock/pipelines'),
+  getMockRuns: () => api.get('/kubeflow/mock/runs'),
+  getMockPipelineGraph: (pipelineId) => api.get(`/kubeflow/mock/pipeline-graph?pipeline_id=${pipelineId}`),
 };
 
 // KServe API calls
 export const kserveApi = {
-  getDeployments: () => api.get('/kserve/deployments'),
-  getDeployment: (name) => api.get(`/kserve/deployments/${name}`),
+  getDeployments: (namespace) => api.get('/kserve/deployments', { params: { namespace } }),
+  getDeployment: (name, namespace = 'default') => api.get(`/kserve/deployments/${name}`, { params: { namespace } }),
   createDeployment: (data) => api.post('/kserve/deployments', data),
-  updateDeployment: (name, data) => api.put(`/kserve/deployments/${name}`, data),
-  deleteDeployment: (name) => api.delete(`/kserve/deployments/${name}`),
-  getServingRuntimes: () => api.get('/kserve/serving-runtimes'),
-  getLogs: (name) => api.get(`/kserve/deployments/${name}/logs`),
-  getPods: (namespace = 'bankchurn-kserve-2') => api.get(`/kserve/pods?namespace=${namespace}`),
-  getDeploymentPods: (name, namespace = 'bankchurn-kserve-2') => 
-    api.get(`/kserve/deployments/${name}/pods?namespace=${namespace}`),
+  deleteDeployment: (name, namespace = 'default') => api.delete(`/kserve/deployments/${name}`, { params: { namespace } }),
+  getServingRuntimes: (namespace) => api.get('/kserve/serving-runtimes', { params: { namespace } }),
+  getLogs: (name, namespace = 'default') => api.get(`/kserve/deployments/${name}/logs`, { params: { namespace } }),
+  getPods: (namespace = 'bankchurn-kserve-2') => api.get(`/kserve/pods`, { params: { namespace } }),
+  getDeploymentPods: (name, namespace = 'default') => 
+    api.get(`/kserve/deployments/${name}/pods`, { params: { namespace } }),
   
   // Mock API calls
-  getMockDeployments: () => api.get('/mock/kserve/deployments'),
-  getMockServingRuntimes: () => api.get('/mock/kserve/serving-runtimes'),
+  getMockDeployments: () => api.get('/kserve/mock/deployments'),
+  getMockServingRuntimes: () => api.get('/kserve/mock/serving-runtimes'),
 };
 
 export default api; 

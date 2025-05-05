@@ -1,112 +1,128 @@
 # MLOps Dashboard
 
-Ứng dụng web để quản lý và hiển thị giao diện của MLflow và Kubeflow Pipelines.
+Ứng dụng dashboard để quản lý và giám sát các thành phần MLOps bao gồm MLflow, Kubeflow Pipelines và KServe.
+
+## Tổng quan
+
+MLOps Dashboard là một ứng dụng web giúp quản lý toàn bộ quy trình làm việc MLOps, từ khâu thử nghiệm với MLflow, triển khai pipeline với Kubeflow, đến việc triển khai và giám sát mô hình với KServe.
+
+## Cấu trúc dự án
+
+```
+mlops-dashboard/
+├── backend/           # API và backend logic
+│   ├── app/           # Mã nguồn backend
+│   │   ├── models/    # Pydantic data models
+│   │   ├── routes/    # Định nghĩa API endpoints
+│   │   ├── services/  # Business logic
+│   │   └── utils/     # Hàm tiện ích
+│   ├── main.py        # Entry point
+│   └── requirements.txt
+│
+└── frontend/          # React frontend
+    ├── public/        # Static files
+    └── src/           # Mã nguồn frontend
+        ├── components/# React components
+        ├── pages/     # React pages
+        ├── services/  # API services
+        └── context/   # React contexts
+```
 
 ## Tính năng
 
-- **Dashboard tổng quan**: Thông tin và biểu đồ về ML experiments và pipeline runs
-- **MLflow Management**: Bật/tắt MLflow server, xem experiments, runs, models và logs
-- **Kubeflow Pipelines**: Kết nối và quản lý Kubeflow Pipelines, xem pipelines, runs và visualization
-- **Chế độ xem trước UI**: Khả năng xem trước UI mà không cần kết nối với các dịch vụ thực tế
+- **Dashboard**: Tổng quan về các thành phần MLOps
+- **MLflow**: 
+  - Quản lý và giám sát MLflow server
+  - Hiển thị thử nghiệm và kết quả
+  - Quản lý Model Registry
+- **Kubeflow Pipelines**:
+  - Hiển thị và quản lý các pipeline
+  - Theo dõi việc chạy pipeline
+  - Visualize pipeline graphs
+- **KServe**:
+  - Triển khai mô hình từ MLflow Model Registry
+  - Quản lý việc triển khai (deployment)
+  - Giám sát các endpoint triển khai
 
-## Công nghệ sử dụng
+## Cài đặt và Chạy
 
 ### Backend
-- FastAPI: Web framework
-- MLflow: ML lifecycle platform 
-- Kubeflow Pipelines: ML pipeline platform
-- Websockets: Realtime logs
 
-### Frontend
-- ReactJS: UI framework
-- Material-UI: UI component library
-- ReactFlow: Pipeline visualization
-- ChartJS: Data visualization
-
-## Cài đặt
-
-### Yêu cầu
-- Python 3.8+
-- Node.js 14+
-- npm 6+
-- MLflow 2.10.2+
-- Kubeflow (optional)
-
-### Bước 1: Cài đặt và chạy Backend
-
+1. Di chuyển vào thư mục backend:
 ```bash
-# Clone repository
 cd mlops-dashboard/backend
-
-# Cài đặt dependencies
-pip install -r requirements.txt
-
-# Chạy server
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Bước 2: Cài đặt và chạy Frontend
-
+2. Cài đặt các thư viện cần thiết:
 ```bash
-# Đi đến thư mục frontend
+pip install -r requirements.txt
+```
+
+3. Khởi động server:
+```bash
+python main.py
+```
+
+Backend API sẽ chạy tại: http://localhost:8000
+
+### Frontend
+
+1. Di chuyển vào thư mục frontend:
+```bash
 cd mlops-dashboard/frontend
+```
 
-# Cài đặt dependencies
+2. Cài đặt các package:
+```bash
 npm install
+```
 
-# Chạy ứng dụng
+3. Khởi động ứng dụng:
+```bash
 npm start
 ```
 
-Sau khi chạy các lệnh trên, bạn có thể truy cập:
-- Frontend tại: http://localhost:3000
-- Backend API tại: http://localhost:8000
-- API docs tại: http://localhost:8000/docs
+Frontend sẽ chạy tại: http://localhost:3000
 
-## Hướng dẫn sử dụng
+## API Documentation
 
-### Dashboard
+Khi backend đang chạy, bạn có thể truy cập vào tài liệu API tại:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
-Trang tổng quan hiển thị thông tin về:
-- Số lượng experiments và runs trong MLflow
-- Số lượng pipelines trong Kubeflow
-- Biểu đồ phân tích runs và trạng thái
-- Hoạt động gần đây
+## Các API endpoint chính
 
-### MLflow
+### MLflow Endpoints
+- `GET /mlflow/status` - Lấy trạng thái của MLflow server
+- `POST /mlflow/start` - Khởi động MLflow server
+- `POST /mlflow/stop` - Dừng MLflow server
+- `GET /mlflow/logs` - Lấy logs của MLflow server
 
-- Bật/tắt MLflow server với các tùy chọn cấu hình
-- Xem danh sách experiments, runs và models
-- Theo dõi logs của MLflow server
-- Truy cập MLflow UI
+### Kubeflow Endpoints
+- `GET /kubeflow/port-forward-command` - Lấy lệnh port-forward cho Kubeflow
+- `GET /kubeflow/check-connection` - Kiểm tra kết nối Kubeflow
 
-### Kubeflow Pipelines
+### KServe Endpoints
+- `GET /kserve/deployments` - Danh sách các deployment
+- `GET /kserve/deployments/{name}` - Lấy thông tin của một deployment
+- `POST /kserve/deployments` - Tạo một deployment mới
+- `DELETE /kserve/deployments/{name}` - Xóa một deployment
+- `GET /kserve/deployments/{name}/logs` - Lấy logs của deployment
+- `GET /kserve/serving-runtimes` - Danh sách serving runtimes
+- `GET /kserve/deployments/{name}/pods` - Lấy danh sách pods của một deployment
+- `GET /kserve/pods` - Lấy tất cả pods trong một namespace
 
-- Kết nối tới Kubeflow thông qua port-forward
-- Xem danh sách pipelines và runs
-- Visualization pipeline dưới dạng đồ thị
-- Thông tin về Kubeflow Pipelines
+## Chế độ Mock Data
 
-## Môi trường
+Ứng dụng hỗ trợ chế độ mock data cho phát triển và thử nghiệm. Sử dụng các endpoint:
+- `GET /mlflow/mock/*` - Mock data cho MLflow
+- `GET /kubeflow/mock/*` - Mock data cho Kubeflow
+- `GET /kserve/mock/*` - Mock data cho KServe
 
-Bạn có thể cấu hình các biến môi trường cho backend trong file `.env`:
+## Yêu cầu hệ thống
 
-```
-API_PORT=8000
-MLFLOW_DEFAULT_PORT=5000
-MLFLOW_DEFAULT_HOST=0.0.0.0
-MLFLOW_DEFAULT_ARTIFACT_URI=./mlruns
-KUBEFLOW_DEFAULT_PORT=8080
-KUBEFLOW_DEFAULT_NAMESPACE=kubeflow
-KUBEFLOW_DEFAULT_SERVICE=ml-pipeline-ui
-CORS_ORIGINS=http://localhost:3000
-```
-
-## Lưu ý
-
-- Khi sử dụng Kubeflow Pipelines, bạn cần có quyền truy cập đến một Kubernetes cluster có Kubeflow đã được cài đặt
-- Để sử dụng tính năng port-forward cho Kubeflow, bạn cần cài đặt và cấu hình kubectl
-
-## License
-
-MIT License 
+- Python 3.8+
+- Node.js 14+
+- Kubernetes cluster (cho KServe)
+- MLflow 2.0+
+- Kubeflow Pipelines 
