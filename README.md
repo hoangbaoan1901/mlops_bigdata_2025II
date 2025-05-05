@@ -38,8 +38,7 @@ Hệ thống tích hợp các thành phần MLOps hiện đại:
 - **Chức năng chính**:
   - Experiment tracking: Ghi lại parameters, metrics, artifacts
   - Model registry: Quản lý và version control models
-  - Model serving: Triển khai models thành REST API endpoints
-- **Cách tích hợp trong dự án**: Tracking experiments, lưu trữ và đăng ký models, triển khai models thành services
+- **Cách tích hợp trong dự án**: Tracking experiments, lưu trữ và đăng ký models
 
 ### 3. **Feast**
 - **Mô tả**: Feature store cho ML
@@ -290,65 +289,6 @@ cd feature_repo
 
 # Cấu hình registry để lưu trữ feature definitions
 # Chỉnh sửa feature_store.yaml
-```
-
-#### Cấu Hình Feast Feature Store
-Tạo file `feature_store.yaml` với nội dung như sau:
-
-```yaml
-project: bank_churn_project
-registry: 
-  registry_type: sql
-  path: sqlite:///registry.db
-provider: local
-online_store:
-  type: redis
-  connection_string: localhost:6379
-offline_store:
-  type: file
-entity_key_serialization_version: 2
-```
-
-Tạo file `features.py` để định nghĩa features:
-
-```python
-from datetime import datetime, timedelta
-from feast import Entity, Feature, FeatureView, FileSource, ValueType
-
-# Định nghĩa entities
-customer = Entity(
-    name="customer_id", 
-    description="customer identifier",
-    value_type=ValueType.INT64
-)
-
-# Định nghĩa data source
-customer_data_source = FileSource(
-    path="data/customer_features.parquet",
-    event_timestamp_column="event_timestamp",
-    created_timestamp_column="created_timestamp",
-)
-
-# Định nghĩa feature view
-customer_features = FeatureView(
-    name="customer_features",
-    entities=["customer_id"],
-    ttl=timedelta(days=90),
-    features=[
-        Feature(name="age", dtype=ValueType.INT64),
-        Feature(name="balance", dtype=ValueType.FLOAT),
-        Feature(name="credit_score", dtype=ValueType.INT64),
-        Feature(name="num_products", dtype=ValueType.INT64),
-        Feature(name="is_active", dtype=ValueType.BOOL),
-    ],
-    batch_source=customer_data_source,
-)
-```
-
-Sau khi định nghĩa features, apply changes vào feature store:
-
-```bash
-feast apply
 ```
 
 ### 6. Cài Đặt Apache Spark

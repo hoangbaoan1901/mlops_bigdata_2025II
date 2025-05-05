@@ -51,7 +51,7 @@ kubectl get pods -n bankchurn-kserve-2
 Để truy cập model trực tiếp từ máy local:
 
 ```bash
-kubectl port-forward -n bankchurn-kserve service/bankchurn-predictor 8085:80
+kubectl port-forward -n bankchurn-kserve-2 service/bankchurn-predictor 8085:80
 ```
 
 ## Định dạng dữ liệu đầu vào
