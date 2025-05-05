@@ -2,23 +2,23 @@
   "general": {
     "total_batches": 10,
     "monitoring_period": {
-      "start": "2025-05-05T00:06:24.442324",
-      "end": "2025-05-05T00:07:55.592649"
+      "start": "2025-05-05T01:20:14.851520",
+      "end": "2025-05-05T01:21:44.769805"
     },
-    "avg_response_time": 31.865391731262207,
+    "avg_response_time": 28.68218183517456,
     "avg_success_rate": 100.0
   },
   "time_patterns": {
     "hourly": {
       "0": {
-        "request_count": 480,
-        "avg_response_time": 33.596219619115196,
+        "request_count": 3590,
+        "avg_response_time": 30.944228305125968,
         "success_rate": 100.0
       },
       "1": {
-        "request_count": 0,
-        "avg_response_time": 0,
-        "success_rate": 0
+        "request_count": 1290,
+        "avg_response_time": 32.368807275165885,
+        "success_rate": 100.0
       },
       "2": {
         "request_count": 0,
@@ -133,8 +133,8 @@
     },
     "daily": {
       "Monday": {
-        "request_count": 480,
-        "avg_response_time": 33.596219619115196,
+        "request_count": 4880,
+        "avg_response_time": 31.320807582042256,
         "success_rate": 100.0
       },
       "Tuesday": {
@@ -169,14 +169,14 @@
       }
     },
     "trend": {
-      "response_time_change_rate": -0.09931857447015904,
-      "response_time_percent_change": -22.810924531294308,
-      "max_response_time_hour": 0,
+      "response_time_change_rate": -0.1496484283232381,
+      "response_time_percent_change": -41.13960865724125,
+      "max_response_time_hour": 1,
       "min_response_time_hour": 23,
-      "hour_response_time_variation": 6.098611298061556,
+      "hour_response_time_variation": 4.871198954112245,
       "daily_success_rate_change": 0.0,
-      "peak_request_hour": 23,
-      "peak_response_time_hour": 0
+      "peak_request_hour": 0,
+      "peak_response_time_hour": 1
     }
   }
 }
