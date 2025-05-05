@@ -15,6 +15,10 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import StorageIcon from '@mui/icons-material/Storage';
 import CategoryIcon from '@mui/icons-material/Category';
 import CloudQueueIcon from '@mui/icons-material/CloudQueue';
+import FolderIcon from '@mui/icons-material/Folder';
+import ScienceIcon from '@mui/icons-material/Science';
+import PipelineIcon from '@mui/icons-material/LinearScale';
+import TimelineIcon from '@mui/icons-material/Timeline';
 
 const drawerWidth = 240;
 
@@ -24,10 +28,12 @@ const Sidebar = () => {
   
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'MLflow Server', icon: <BarChartIcon />, path: '/mlflow' },
-    { text: 'Kubeflow Pipelines', icon: <StorageIcon />, path: '/kubeflow' },
+    { text: 'File Manager', icon: <FolderIcon />, path: '/file-manager' },
+    { text: 'Experiments', icon: <ScienceIcon />, path: '/experiments' },
     { text: 'Model Registry', icon: <CategoryIcon />, path: '/model-registry' },
-    { text: 'KServe', icon: <CloudQueueIcon />, path: '/kserve' },
+    { text: 'Pipelines', icon: <PipelineIcon />, path: '/pipelines' },
+    { text: 'Deploy', icon: <CloudQueueIcon />, path: '/deploy' },
+    { text: 'Monitoring', icon: <TimelineIcon />, path: '/monitoring' },
   ];
 
   return (

@@ -10,6 +10,10 @@ import MLflowPage from './pages/MLflowPage';
 import KubeflowPage from './pages/KubeflowPage';
 import ModelRegistryPage from './pages/ModelRegistryPage';
 import KServePage from './pages/KServePage';
+import FileManagerPage from './pages/FileManagerPage';
+import ExperimentsPage from './pages/ExperimentsPage';
+import PipelinePage from './pages/PipelinePage';
+import MonitoringPage from './pages/MonitoringPage';
 import MockModeProvider from './context/MockModeContext';
 
 // Create custom theme
@@ -88,9 +92,13 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/mlflow" element={<MLflowPage />} />
-              <Route path="/kubeflow" element={<KubeflowPage />} />
+              <Route path="/experiments" element={<ExperimentsPage />} />
               <Route path="/model-registry" element={<ModelRegistryPage />} />
-              <Route path="/kserve" element={<KServePage />} />
+              <Route path="/pipelines" element={<PipelinePage />} />
+              <Route path="/deploy" element={<KServePage />} />
+              <Route path="/monitoring" element={<MonitoringPage />} />
+              <Route path="/file-manager" element={<FileManagerPage />} />
+              <Route path="/kubeflow" element={<KubeflowPage />} />
             </Routes>
           </div>
         </div>
