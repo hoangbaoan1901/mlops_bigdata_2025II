@@ -1,34 +1,33 @@
-import React from 'react';
-import { Box, Typography, Card, CardContent, Button } from '@mui/material';
-import FolderIcon from '@mui/icons-material/Folder';
+import React, { useState, useEffect } from 'react';
+import { Box } from '@mui/material';
 
 const FileManagerPage = () => {
+  const [minioUrl] = useState('http://localhost:9000');
+  const [iframeKey, setIframeKey] = useState(Date.now());
+
+  // Automatically refresh iframe when component mounts
+  useEffect(() => {
+    setIframeKey(Date.now());
+  }, []);
+
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        File Manager
-      </Typography>
-      
-      <Card sx={{ maxWidth: '100%', mb: 3 }}>
-        <CardContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <FolderIcon fontSize="large" color="primary" sx={{ mr: 2 }} />
-            <Typography variant="h6">
-              File Management Interface
-            </Typography>
-          </Box>
-          
-          <Typography variant="body1" paragraph>
-            This is the file manager interface for the MLOps dashboard. This component will be implemented to allow users to browse, upload, and manage files related to ML projects.
-          </Typography>
-          
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="contained" color="primary" disabled>
-              Coming Soon
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
+    <Box sx={{ 
+      width: '100%',
+      height: 'calc(100vh - 40px)', // Adjust to leave space for navbar
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <iframe
+        key={iframeKey}
+        src={minioUrl + "/minio/mlflow-artifacts/"}
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none'
+        }}
+        title="MinIO File Manager"
+      />
     </Box>
   );
 };
