@@ -74,6 +74,15 @@ Hệ thống tích hợp các thành phần MLOps hiện đại:
   - Scalable message processing
 - **Cách tích hợp trong dự án**: Thu thập dữ liệu real-time cho Stock Price use case
 
+### 7. **KServe**
+- **Mô tả**: Serverless inferencing platform trên Kubernetes
+- **Chức năng chính**:
+  - Model serving với auto-scaling
+  - Canary deployment và A/B testing
+  - Multi-framework (TensorFlow, PyTorch, scikit-learn, XGBoost)
+  - Inference request logging và explainability
+- **Cách tích hợp trong dự án**: Triển khai production models với khả năng auto-scaling và monitoring
+
 ## Cấu Trúc Project
 ```
 mlops_bigdata_2025II/
@@ -143,14 +152,15 @@ mlops_bigdata_2025II/
 
 ### 5. **Model Deployment & Serving**
 - **Công nghệ sử dụng**:
-  - Kubeflow Serving
-  - MLflow Model Serving
-  - Feast Serving
+  - KServe cho model inference
+  - MLflow Model Registry cho model versioning
+  - Feast Serving cho feature serving
 - **Quy trình**:
-  - Model packaging
-  - Service deployment
-  - API endpoint creation
-- **Artifacts**: Deployed services, API documentation
+  - Model packaging theo chuẩn KServe
+  - Service deployment với canary và traffic splitting
+  - Integration với feature store
+  - API documentation cho consumers
+- **Artifacts**: InferenceService manifests, API documentation, model transformers
 
 ### 6. **Model Monitoring & Feedback Loop**
 - **Công nghệ sử dụng**:
@@ -396,63 +406,6 @@ spec:
   - Ingress
 EOF
 ```
-
-### 10. Troubleshooting Cài Đặt
-
-#### Kubernetes và Kubeflow
-- **Vấn đề**: Pods bị stuck trong trạng thái "Pending"
-  - **Giải pháp**: Kiểm tra resource limits của Kubernetes cluster. Tăng resources nếu cần.
-  ```bash
-  kubectl describe pod <pod-name> -n kubeflow
-  ```
-
-- **Vấn đề**: Kubeflow components không khởi động
-  - **Giải pháp**: Kiểm tra logs của pods và sửa lỗi theo thông báo
-  ```bash
-  kubectl logs <pod-name> -n kubeflow
-  ```
-
-#### MLflow
-- **Vấn đề**: MLflow không kết nối được với MinIO
-  - **Giải pháp**: Kiểm tra cấu hình endpoint và credentials
-  ```bash
-  kubectl exec -it <mlflow-pod> -n kubeflow -- env | grep MLFLOW
-  ```
-
-#### Feast
-- **Vấn đề**: Lỗi "Redis connection error"
-  - **Giải pháp**: Đảm bảo Redis đang chạy và cấu hình đúng connection string
-  ```bash
-  # Cài đặt Redis nếu chưa có
-  helm install redis bitnami/redis --namespace kubeflow
-  ```
-
-- **Vấn đề**: Feature không hiển thị trong registry
-  - **Giải pháp**: Kiểm tra lỗi khi chạy `feast apply` và format của feature definitions
-
-#### Spark và Kafka
-- **Vấn đề**: Spark jobs thất bại
-  - **Giải pháp**: Kiểm tra logs của Spark driver và executors
-  ```bash
-  kubectl logs <spark-driver-pod> -n spark-system
-  ```
-
-- **Vấn đề**: Kafka không nhận được messages
-  - **Giải pháp**: Kiểm tra network connectivity giữa producer và Kafka brokers
-  ```bash
-  kubectl exec -it <kafka-pod> -n kafka-system -- kafka-topics.sh --list --bootstrap-server localhost:9092
-  ```
-
-#### Các Vấn Đề Chung
-- **Vấn đề**: Network connectivity giữa các services
-  - **Giải pháp**: Kiểm tra NetworkPolicies và đảm bảo các namespace có thể giao tiếp
-  ```bash
-  # Kiểm tra connectivity giữa pods
-  kubectl exec -it <source-pod> -n <source-namespace> -- ping <destination-service>.<destination-namespace>.svc
-  ```
-
-- **Vấn đề**: Phiên bản thư viện Python không tương thích
-  - **Giải pháp**: Sử dụng chính xác các phiên bản trong `requirements.txt` và tạo virtual environment mới
 
 ## Hướng Dẫn Thiết Lập & Sử Dụng
 
