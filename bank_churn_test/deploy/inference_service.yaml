@@ -1,8 +1,8 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: mlflow-model
-  namespace: bankchurn-kserve-2
+  name: bankchurn-model
+  # namespace: bankchurn-kserve-2
   annotations:
     sidecar.istio.io/inject: "false"
 spec:
@@ -12,4 +12,4 @@ spec:
       modelFormat:
         name: mlflow
       protocolVersion: v2 # Use V2 inference protocol for MLflow models
-      storageUri: "s3://mlflow-artifacts/3/3cad7a3d97dc44c4a07ef03680442b79/artifacts/model/" # Path to your model in MinIO
+      storageUri: "s3://mlflow-artifacts/1/d88a93df67ac4d8282894ebeadc0956a/artifacts/model/" # Path to your model in MinIO

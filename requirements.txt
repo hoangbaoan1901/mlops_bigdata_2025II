@@ -1,24 +1,22 @@
 # Core dependencies
-kfp==2.0.1
-kubernetes==28.1.0
+kfp
+kubernetes
 
-# Feature Store
-feast==0.34.1
 
 # Data Processing & ML
-pandas==2.1.4
-pyarrow==14.0.1
-scikit-learn==1.3.2
+pandas
+pyarrow
+scikit-learn
 
 # MLflow
-mlflow==2.10.2
+mlflow
 
 # Storage & Cloud
-boto3==1.34.0
-botocore==1.34.0
+boto3
+botocore
 
 # Logging & Monitoring
-python-json-logger==2.0.7
+python-json-logger
 
 # Web Application
-streamlit==1.32.0 
+streamlit

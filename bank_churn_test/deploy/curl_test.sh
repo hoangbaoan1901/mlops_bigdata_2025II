@@ -1,5 +1,5 @@
 #!/bin/bash
 # filepath: /home/hoangbaoan/repos/mlops_bigdata_2025II/bank_churn_test/deploy/curl_test.sh
-curl -X POST http://localhost:28080/v2/models/mlflow-model/infer \
+curl -X POST http://localhost:8080/v2/models/bankchurn-modell/infer \
   -H "Content-Type: application/json" \
   -d '{"inputs": [{"name": "CreditScore", "datatype": "FP64", "shape": [1], "data": [850]},{"name": "Geography", "datatype": "FP64", "shape": [1], "data": [1]},{"name": "Gender", "datatype": "FP64", "shape": [1], "data": [0]},{"name": "Age", "datatype": "FP64", "shape": [1], "data": [43]},{"name": "Tenure", "datatype": "FP64", "shape": [1], "data": [2]},{"name": "Balance", "datatype": "FP64", "shape": [1], "data": [125510.82]},{"name": "NumOfProducts", "datatype": "FP64", "shape": [1], "data": [1]},{"name": "HasCrCard", "datatype": "FP64", "shape": [1], "data": [1]},{"name": "IsActiveMember", "datatype": "FP64", "shape": [1], "data": [1]},{"name": "EstimatedSalary", "datatype": "FP64", "shape": [1], "data": [79084.1]}]}'

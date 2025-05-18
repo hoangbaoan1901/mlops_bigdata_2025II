@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-mlflow-all-sources # New name to reflect broader access
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: mlflow # Make sure this label matches your MLflow service/pods
+  action: ALLOW
+  rules:
+  - to: # No 'from' section means allow from any source
+    - operation:
+        methods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"]
+        ports: ["5000"]
