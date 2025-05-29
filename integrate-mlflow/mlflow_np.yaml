@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mlflow-allow-ingress
+  namespace: kubeflow
+spec:
+  podSelector:
+    matchLabels:
+      app: mlflow  # Ensure this label matches your MLflow pods
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 5000 # The port your MLflow service/pods listen on
